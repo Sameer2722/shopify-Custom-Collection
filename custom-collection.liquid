@@ -44,7 +44,7 @@
             </div>
           {% endif %}
           <div class="collection-button">
-            <a class="coll-btn" href="{{ collecton.url }}">{{ block.settings.collection_btn_label }}</a>
+            <a style="background-color: {{ block.settings.button_bg_color }}; color: {{block.settings.button_label_color}}"  class="coll-btn" href="{{ collecton.url }}">{{ block.settings.collection_btn_label }}</a>
           </div>
         </div>
 
@@ -114,7 +114,20 @@
             "id": "collection_btn_label",
             "label": "Collection Button",
             "default": "Shop Now"
+          },
+          {
+            "type": "color",
+            "id": "button_bg_color",
+            "label": "Button Background",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "button_label_color",
+            "label": "Button Label Color",
+            "default": "#ffffff"
           }
+
 
         ]
       }
