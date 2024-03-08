@@ -1,0 +1,137 @@
+{{ 'custom-collection.css' | asset_url | stylesheet_tag }}
+
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+
+<!-- ========== Collection Section ========= -->
+
+<div class="collection-list section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+  <div class="section-heading">
+    <h1>{{ section.settings.title }}</h1>
+  </div>
+  <div class="col-row">
+
+    {% for block in section.blocks %}
+
+      {% assign collecton = collections[block.settings.collection] %}
+
+        <div class="coll-item">
+        <!-- Item 1 -->
+        <div class="collection-img">
+          {% if block.settings.collection_img != blank %}
+            <img src="{{ block.settings.collection_img | img_url: 'master' }}" alt="Collection_Image">
+          {% else %}
+            {% comment %} {{ 'image' | placeholder_svg_tag }} {% endcomment %}
+            <img src="{{ collecton.featured_image | img_url: 'master' }}" alt="">
+          {% endif %}
+
+          {% if collecton.title != blank %}
+            <div class="collection-title">
+              <h2>{{ collecton.title }}</h2>
+            </div>
+          {% endif %}
+          <div class="collection-button">
+            <a class="coll-btn" href="{{ collecton.url }}">{{ block.settings.collection_btn_label }}</a>
+          </div>
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Custom Collection",
+    "tag": "section",
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "inline_richtext",
+        "id": "title",
+        "default": "Collections",
+        "label": "Collection Heading"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "default": "scheme_1",
+        "label": "Color Scheme"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 36
+      }, {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 36
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Featured Collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Select Collection"
+          }, {
+            "type": "image_picker",
+            "id": "collection_img",
+            "label": "Collection Image"
+          }, {
+            "type": "text",
+            "id": "collection_btn_label",
+            "label": "Collection Button",
+            "default": "Shop Now"
+          }
+
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "custom collection",
+        "blocks": [
+          {
+            "type": "featured_collection"
+          }, {
+            "type": "featured_collection"
+          }, {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
